@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Crypto in PHP</title>
+		<style>
+			:root {
+				--r-main-font: 'Roboto', 'Noto Color Emoji', sans-serif;
+				--r-heading-font: 'Roboto', 'Noto Color Emoji', sans-serif;
+				--r-code-font: 'Roboto Mono', 'Noto Color Emoji', monospace;
+				--r-block-margin: 10px;
+			}
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+				text-transform: none;
+			}
+			.reveal pre {
+				font-size: .60em;
+			}
+			.nohighlight {
+				padding: 1em !important;
+			}
+			.reveal .hljs {
+				min-height: auto;
+			}
+			td.hljs-ln-code {
+				white-space: pre;
+			}
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal pre, .reveal p, .reveal img {
+				margin: 0 var(--r-block-margin) calc(var(--r-block-margin) * 2);
+			}
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+				text-transform: none;
+			}
+			.reveal pre {
+				font-size: .60em;
+			}
+			.reveal pre {
+				width: auto;
+			}
+			.reveal pre code {
+				max-height: none;
+			}
+
+			.reveal .db-rows {
+				font-size: 0.7em;
+				> thead {
+					background-color: #f2f2f2;
+				}
+
+				thead > tr > th {
+					padding: 0.5em;
+				}
+
+				thead > tr > th, tbody > tr > td {
+					text-align: center;
+					border: 1px solid black;
+				}
+
+				tbody tr:last-child td {
+					border-bottom: 1px solid black;
+				}
+			}
+
+			.greeting {
+				position: relative;
+				text-align: center;
+
+				.bottom-center {
+					position: absolute;
+					bottom: 8px;
+					top: 80%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
+			}
+
+			.greeting {
+				color: white;
+				font-size: 0.9em;
+				text-shadow: 1px 1px 10px #000;
+			}
+		</style>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/github.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<div class="greeting">
+						<img src="images/greeting.jpg" alt="" style="width: 100%">
+						<div class="bottom-center greeting">
+							Выйди и расскажи гостям <br>про эту свою крипту
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="greeting">
+						<img src="images/crypto-team.jpg" alt="">
+						<div class="bottom-center" style="left: 34%">Девопсы</div>
+						<div class="bottom-center" style="top: 66%">Крипто-<br/>команда</div>
+						<div class="bottom-center" style="left: 67%">Архитекторы</div>
+					</div>
+				</section>
+				<section>
+					<img src="images/crypto-team-2.jpg" alt="">
+				</section>
+				<section>
+					<h2>Структуры данных</h2>
+					<img src="images/explorer-1.png" alt="">
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape>
+							class Transaction
+							{
+								public function __construct(
+									private readonly string $addressFrom,
+									private readonly string $addressTo,
+									private readonly string $amount,
+									private readonly string $currency,
+								) {
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<table class="db-rows">
+						<thead>
+							<tr>
+								<th>hash</th>
+								<th>address_from</th>
+								<th>address_to</th>
+								<th>amount</th>
+								<th>currency</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>0x73f8fed2...</td>
+								<td>0xc407...24308</td>
+								<td>0x4924...f7CF9</td>
+								<td>0.003855038</td>
+								<td>ETH</td>
+							</tr>
+							<tr>
+								<td>0xdeddf137...</td>
+								<td>0xa970...d8950</td>
+								<td>0xEDCb...84Aa8</td>
+								<td>0.012173249</td>
+								<td>ETH</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				<section>
+					<h2>Блокчейны и сети</h2>
+					<div class="container">
+						<div class="col-sm-4">
+							<h4>Bitcoin</h4>
+							<ul>
+								<li>Mainnet</li>
+								<li>Testnet</li>
+							</ul>
+						</div>
+						<div class="col-sm-4">
+							<h4>Ethereum</h4>
+							<ul>
+								<li>Sepolia Testnet</li>
+								<li>Holesky Testnet</li>
+							</ul>
+						</div>
+						<div class="col-sm-4">
+							<h4>Tron</h4>
+							<ul>
+								<li>Mainnet</li>
+								<li>Nile Testnet</li>
+								<li>Shasta Testnet</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="r-stack">
+						<table class="db-rows fragment fade-out" data-fragment-index="0">
+							<thead>
+								<tr>
+									<th>hash</th>
+									<th>address_from</th>
+									<th>address_to</th>
+									<th>amount</th>
+									<th>currency</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>0x73f8fed2...</td>
+									<td>0xc407...24308</td>
+									<td>0x4924...f7CF9</td>
+									<td>0.003855038</td>
+									<td>ETH</td>
+								</tr>
+								<tr>
+									<td>0xdeddf137...</td>
+									<td>0xa970...d8950</td>
+									<td>0xEDCb...84Aa8</td>
+									<td>0.012173249</td>
+									<td>ETH</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="db-rows fragment current-visible" style="font-size: 0.55em;" data-fragment-index="0">
+							<thead>
+							<tr>
+								<th>hash</th>
+								<th>address_from</th>
+								<th>address_to</th>
+								<th>amount</th>
+								<th>currency</th>
+								<th>blockchain</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>0x73f8fed2...</td>
+								<td>0xc407...24308</td>
+								<td>0x4924...f7CF9</td>
+								<td>0.003855038</td>
+								<td>ETH</td>
+								<td>ethereum_mainnet</td>
+							</tr>
+							<tr>
+								<td>0xdeddf137...</td>
+								<td>0xa970...d8950</td>
+								<td>0xEDCb...84Aa8</td>
+								<td>0.012173249</td>
+								<td>ETH</td>
+								<td>ethereum_sepolia</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="db-rows fragment" style="font-size: 0.55em;">
+							<thead>
+							<tr>
+								<th>hash</th>
+								<th>address_from</th>
+								<th>address_to</th>
+								<th>amount</th>
+								<th>currency</th>
+								<th>blockchain</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>0x73f8fed2...</td>
+								<td>0xc407...24308</td>
+								<td>0x4924...f7CF9</td>
+								<td>100</td>
+								<td>ETH</td>
+								<td>ethereum_mainnet</td>
+							</tr>
+							<tr>
+								<td>0xdeddf137...</td>
+								<td>0xa970...d8950</td>
+								<td>0xEDCb...84Aa8</td>
+								<td>1000000</td>
+								<td>PEPE</td>
+								<td>ethereum_sepolia</td>
+							</tr>
+							<tr>
+								<td>0x1fed1b03...</td>
+								<td>0x9E0f...94F35</td>
+								<td>0x8446...d8190d</td>
+								<td>0.003855038</td>
+								<td>ETH</td>
+								<td>ethereum_mainnet</td>
+							</tr>
+							<tr>
+								<td>0x388ea62e...</td>
+								<td>0x2458...FdF97</td>
+								<td>0x4206...4C625A</td>
+								<td>0.012173249</td>
+								<td>ETH</td>
+								<td>ethereum_sepolia</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape>
+							enum BlockchainName: string
+							{
+								case BITCOIN = 'bitcoin';
+								case ETEREUM = 'ethereum';
+								case TRON = 'tron';
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape>
+							final readonly class Blockchain
+							{
+								private const NETWORK_MAINNET = 'mainnet';
+								public string $network;
+
+								public function __construct(
+									public BlockchainName $blockchainName,
+									?string $network = null
+								) {
+									$this->network = $network ?? self::NETWORK_MAINNET;
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape>
+							public static function ethereum(): self
+							{
+								return new self(BlockchainName::ETHEREUM);
+							}
+
+							public static function ethereumSepolia(): self
+							{
+								return new self(BlockchainName::ETHEREUM, 'sepolia');
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape>
+							class Transaction
+							{
+								public function __construct(
+									private string $addressFrom,
+									private string $addressTo,
+									private string $amount,
+									private string $currency,
+									private readonly Blockchain $blockchain
+								) {
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<table class="db-rows">
+						<thead>
+						<tr>
+							<th>currency</th>
+							<th>blockchain</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>ETH</td>
+							<td>ethereum_mainnet</td>
+						</tr>
+						<tr>
+							<td>PEPE</td>
+							<td>ethereum_sepolia</td>
+						</tr>
+						<tr>
+							<td>ETH</td>
+							<td>ethereum_mainnet</td>
+						</tr>
+						<tr>
+							<td>ETH</td>
+							<td>ethereum_sepolia</td>
+						</tr>
+						</tbody>
+					</table>
+				</section>
+				<section>
+					<div class="r-stack">
+						<h3 class="fragment fade-out" data-fragment-index="0">Asset = Blockchain + Currency</h3>
+						<p class="fragment current-visible" data-fragment-index="0">Asset = Blockchain (name + network) + Currency + AssetID</p>
+					</div>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape>
+							final readonly class Asset
+							{
+								private function __construct(
+									public string $id,
+									public string $currency,
+									public Blockchain $blockchain,
+								) {}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre style="width: 104%;">
+						<code class="language-php" data-trim data-noescape>
+							public static function USDT_TRON(): self
+							{
+								return new self('USDT_TRON', 'USDT', Blockchain::tron());
+							}
+
+							public static function PEPE_ETHEREUM(): self
+							{
+								return new self('PEPE_ETHEREUM', 'PEPE', Blockchain::ethereum());
+							}
+
+							public static function USDT_ETHEREUM_SEPOLIA(): self
+							{
+								return new self(
+									'USDT_ETHEREUM_SEPOLIA', 'USDT', Blockchain::ethereumSepolia()
+								);
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<div class="r-stack">
+						<table class="db-rows fragment fade-out" data-fragment-index="0" style="font-size: 0.55em;">
+							<thead>
+							<tr>
+								<th>hash</th>
+								<th>address_from</th>
+								<th>address_to</th>
+								<th>amount</th>
+								<th>currency</th>
+								<th>blockchain</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>0x73f8fed2...</td>
+								<td>0xc407...24308</td>
+								<td>0x4924...f7CF9</td>
+								<td>100</td>
+								<td>ETH</td>
+								<td>ethereum_mainnet</td>
+							</tr>
+							<tr>
+								<td>0xdeddf137...</td>
+								<td>0xa970...d8950</td>
+								<td>0xEDCb...84Aa8</td>
+								<td>1000000</td>
+								<td>PEPE</td>
+								<td>ethereum_sepolia</td>
+							</tr>
+							<tr>
+								<td>0x1fed1b03...</td>
+								<td>0x9E0f...94F35</td>
+								<td>0x8446...d8190d</td>
+								<td>0.003855038</td>
+								<td>ETH</td>
+								<td>ethereum_mainnet</td>
+							</tr>
+							<tr>
+								<td>0x388ea62e...</td>
+								<td>0x2458...FdF97</td>
+								<td>0x4206...4C625A</td>
+								<td>0.012173249</td>
+								<td>ETH</td>
+								<td>ethereum_sepolia</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="db-rows fragment current-visible" data-fragment-index="0" style="font-size: 0.55em;">
+							<thead>
+							<tr>
+								<th>hash</th>
+								<th>address_from</th>
+								<th>address_to</th>
+								<th>amount</th>
+								<th>asset_id</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>0x73f8fed2...</td>
+								<td>0xc407...24308</td>
+								<td>0x4924...f7CF9</td>
+								<td>100</td>
+								<td>USDT_TRON</td>
+							</tr>
+							<tr>
+								<td>0xdeddf137...</td>
+								<td>0xa970...d8950</td>
+								<td>0xEDCb...84Aa8</td>
+								<td>1000000</td>
+								<td>PEPE_ETHEREUM_SEPOLIA</td>
+							</tr>
+							<tr>
+								<td>0x1fed1b03...</td>
+								<td>0x9E0f...94F35</td>
+								<td>0x8446...d8190d</td>
+								<td>0.003855038</td>
+								<td>ETH</td>
+							</tr>
+							<tr>
+								<td>0x388ea62e...</td>
+								<td>0x2458...FdF97</td>
+								<td>0x4206...4C625A</td>
+								<td>0.012173249</td>
+								<td>ETH_SEPOLIA</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape data-line-numbers="1-15|3,9,12">
+							class Transaction
+							{
+								private readonly string $currency;
+								private readonly Blockchain $blockchain;
+
+								public function __construct(
+									private string $addressFrom,
+									private string $addressTo,
+									private string $amount,
+									private readonly Asset $asset
+								) {
+									$this->currency = $asset->currency;
+									$this->blockchain = $asset->blockchain;
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h2>Money</h2>
+					<img src="images/money.jpg" alt="" style="width: 80%">
+				</section>
+				<section>
+					<img src="images/money-libs.png" alt="">
+				</section>
+				<section>
+					<table class="db-rows">
+						<thead>
+						<tr>
+							<th>MoneyPHP</th>
+							<th>Brick\Money</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>Зрелая библиотека (c 2011 года)</td>
+							<td>До сих пор нет версии 1.0</td>
+						</tr>
+						<tr>
+							<td>Не очень user-friendly интерфейс</td>
+							<td>user-friendly интерфейс</td>
+						</tr>
+						<tr>
+							<td>Парсеры, форматтеры, конвертеры</td>
+							<td>Парсеры, форматтеры, конвертеры</td>
+						</tr>
+						<tr>
+							<td class="fragment highlight-blue">Поддежрка криптовалют из коробки</td>
+							<td>Нужно добавлять всё самому</td>
+						</tr>
+						</tbody>
+					</table>
+				</section>
+				<section>
+					<pre style="min-height: 500px;" >
+						<code class="language-php" data-trim data-noescape data-line-numbers="1-17|3,4,10,13-14">
+							class Transaction
+							{
+								private readonly string $amount;
+								private readonly Currency $currency;
+								private readonly Blockchain $blockchain;
+
+								public function __construct(
+									private string $addressFrom,
+									private string $addressTo,
+									private Money $amount,
+									private readonly Asset $asset
+								) {
+									$this->amount = $amount->getAmount();
+									$this->currency = $amount->getCurrency();
+									$this->blockchain = $asset->blockchain;
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre style="width: 100%" >
+						<code class="language-php" data-trim data-noescape data-line-numbers="1-15|5,12">
+							final readonly class Asset
+							{
+								private function __construct(
+									public string $id,
+									public Currency $currency,
+									public Blockchain $blockchain,
+								) {}
+
+								public static function USDT_TRON(): self
+								{
+									return new self(
+										'USDT_TRON', new Currency('USDT'), Blockchain::tron(),
+									);
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<table class="db-rows" style="font-size: 0.55em;">
+						<thead>
+						<tr>
+							<th>hash</th>
+							<th>address_from</th>
+							<th>address_to</th>
+							<th>amount</th>
+							<th>currency</th>
+							<th>blockchain</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>0x73f8fed2...</td>
+							<td>0xc407...24308</td>
+							<td>0x4924...f7CF9</td>
+							<td>100</td>
+							<td>ETH</td>
+							<td>ethereum_mainnet</td>
+						</tr>
+						<tr>
+							<td>0xdeddf137...</td>
+							<td>0xa970...d8950</td>
+							<td>0xEDCb...84Aa8</td>
+							<td>1000000</td>
+							<td>PEPE</td>
+							<td>ethereum_sepolia</td>
+						</tr>
+						<tr>
+							<td>0x1fed1b03...</td>
+							<td>0x9E0f...94F35</td>
+							<td>0x8446...d8190d</td>
+							<td>0.003855038</td>
+							<td>ETH</td>
+							<td>ethereum_mainnet</td>
+						</tr>
+						<tr>
+							<td>0x388ea62e...</td>
+							<td>0x2458...FdF97</td>
+							<td>0x4206...4C625A</td>
+							<td>0.012173249</td>
+							<td>ETH</td>
+							<td>ethereum_sepolia</td>
+						</tr>
+						</tbody>
+					</table>
+				</section>
+				<section>
+					<h2>Адреса</h2>
+					<div class="container">
+						<div class="col-sm-4">
+							<h4>UTXO</h4>
+							<ul>
+								<li>Bitcoin</li>
+								<li>Dogecoin</li>
+								<li>Litecoin</li>
+							</ul>
+						</div>
+						<div class="col-sm-4">
+							<h4>Account-based</h4>
+							<ul>
+								<li>Ethereum</li>
+								<li>Tron</li>
+								<li>Binance Smart Chain</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h2>UTXO vs Account-based</h2>
+					<p>
+						<img src="images/utxo.png" alt="" style="width: 40%; margin-right: 50px">
+						<img src="images/account-based.png" alt="" style="width: 40%; margin-left: 50px">
+					</p>
+				</section>
+				<section>
+					<h2>Inputs/Outputs</h2>
+					<table class="db-rows" style="font-size: 0.55em;">
+						<thead>
+							<tr>
+								<th>transaction_id</th>
+								<th>address</th>
+								<th>type</th>
+								<th>amount</th>
+								<th>currency</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="fragment highlight-current-blue" data-fragment-index="0">
+								<td>11</td>
+								<td>0x092A754610F82e3E7b6776256311e7D164DeBB6B</td>
+								<td>incoming</td>
+								<td>100</td>
+								<td>USDT</td>
+							</tr>
+							<tr class="fragment highlight-current-blue" data-fragment-index="0">
+								<td>11</td>
+								<td>0x911A978F0CAC392079b51DB03E6f3027Dfe6F96E</td>
+								<td>outgoing</td>
+								<td>100</td>
+								<td>USDT</td>
+							</tr>
+							<tr class="fragment highlight-current-blue" data-fragment-index="1">
+								<td>12</td>
+								<td>bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq</td>
+								<td>incoming</td>
+								<td>0.003</td>
+								<td>BTC</td>
+							</tr>
+							<tr class="fragment highlight-current-blue" data-fragment-index="1">
+								<td>12</td>
+								<td>bc1q2dyp7355r2ahkrxngq3y56mulsan3y42sjdsuv</td>
+								<td>incoming</td>
+								<td>0.007 </td>
+								<td>BTC</td>
+							</tr>
+							<tr class="fragment highlight-current-blue" data-fragment-index="1">
+								<td>12</td>
+								<td>bc1zw508d6qejxtdg4y5r3zarvaryvg6kdaj</td>
+								<td>outgoing</td>
+								<td>0.01 </td>
+								<td>BTC</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				<section>
+					<h2>Транзакция</h2>
+					<ul>
+						<li>Используем ассеты (блокчейн + валюта)</li>
+						<li>Для работы с деньгами используем объект Money</li>
+						<li>Адресов может быть несколько (UTXO)</li>
+						<li>Inputs/outputs храним в отдельной таблице</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Transaction flow</h2>
+					<img src="images/transaction-flow.svg" alt="">
+				</section>
+				<section>
+					<pre style="width: 110%">
+						<code class="language-php"
+							  data-line-numbers="1-20|8-18|8-9|11-14|11-18"
+							  data-trim data-noescape style="max-height: 520px">
+							#[WorkflowInterface]
+							final class ExecuteCryptoTransactionWorkflow
+							{
+								// ...
+
+								public function execute(CryptoAddress $address, Money $amount)
+								{
+									$hex = yield $this->walletActivity->sign($address, $amount);
+									$hash = yield $this->broadcastActivity->broadcast($hex);
+
+									do {
+										$blockchainTransaction = yield $this->explorerActivity->check($hash);
+										yield Workflow::timer(self::TRANSACTION_MONITOR_WAIT_SECONDS);
+									} while (!$blockchainTransaction->isConfirmed());
+
+									yield $this->payoutActivity->completeTransaction(
+										$blockchainTransaction
+									);
+								}
+							}
+
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre style="width: 100%">
+						<code class="language-php" data-trim data-noescape style="max-height: 520px">
+							#[ActivityInterface]
+							final class WalletActivity
+							{
+								// ...
+
+								#[ActivityMethod]
+								public function sign(
+									CryptoAddress $address, Money $amount
+								): BlockchainTransactionHex {
+									$wallet = $this->wallets->get($address->blockchain);
+
+									/**
+									 * Check balance and receive "raw transaction" hex from node.
+									 */
+
+									return new BlockchainTransactionHex(
+										$hex, $address->blockchain
+									);
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre style="width: 100%">
+						<code class="language-php" data-trim data-noescape style="max-height: 520px">
+							#[ActivityInterface]
+							final class BroadcastActivity
+							{
+								// ...
+
+								#[ActivityMethod]
+								public function broadcaster(
+									BlockchainTransactionHex $hex
+								): BlockchainTransactionHash {
+									$broadcasterNode = $this->broadcasters->get($hex->blockchain);
+
+									/**
+									 * Broadcast transaction and receive hash from node.
+									 */
+
+									return new BlockchainTransactionHash($hash, $hex->blockchain);
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre style="width: 100%">
+						<code class="language-php" data-trim data-noescape style="max-height: 520px">
+							#[ActivityInterface]
+							final class ExplorerActivity
+							{
+								// ...
+
+								#[ActivityMethod]
+								public function check(
+									BlockchainTransactionHash $hash
+								): BlockchainTransaction
+								{
+									$explorer = $this->explorers->get($hash->blockchain);
+									return $explorer->getTransactionInfo($hash->hash);
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>Статусы блокчейн транзакции</h3>
+					<div class="r-stack">
+					<ul class="">
+						<li class="fragment highlight-current-blue">Signed</li>
+						<li class="fragment highlight-current-blue">Broadacting</li>
+						<li class="fragment highlight-current-blue">Broadcasted</li>
+						<li class="fragment highlight-current-blue">Broadcast failed</li>
+						<li class="fragment highlight-current-blue">Confirming</li>
+						<li class="fragment highlight-current-blue">Confirmed</li>
+						<li class="fragment highlight-current-blue">Failed on blockchain</li>
+						<li class="fragment highlight-current-blue">Replaced</li>
+					</ul>
+					<img src="images/pepe-silvia.jpg" class="fragment" alt="" style="width: 80%">
+					</div>
+				</section>
+				<section>
+					<img src="images/drake-meme.png" alt="">
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				slideNumber: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
