@@ -5,6 +5,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<title>Crypto in PHP</title>
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/github.css">
 		<style>
 			:root {
 				--r-main-font: 'Roboto', 'Noto Color Emoji', sans-serif;
@@ -27,14 +32,11 @@
 			td.hljs-ln-code {
 				white-space: pre;
 			}
-			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal pre, .reveal p, .reveal img {
-				margin: 0 var(--r-block-margin) calc(var(--r-block-margin) * 2);
-			}
-			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
-				text-transform: none;
-			}
 			.reveal pre {
-				font-size: .60em;
+				font-size: .45em;
+			}
+			.reveal a.explorer-link {
+				font-size: 0.5em;
 			}
 			.reveal pre {
 				width: auto;
@@ -81,13 +83,8 @@
 				font-size: 0.9em;
 				text-shadow: 1px 1px 10px #000;
 			}
-		</style>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/white.css">
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/github.css">
+		</style>
 	</head>
 	<body>
 		<div class="reveal">
@@ -869,11 +866,249 @@
 						<li class="fragment highlight-current-blue">Failed on blockchain</li>
 						<li class="fragment highlight-current-blue">Replaced</li>
 					</ul>
-					<img src="images/pepe-silvia.jpg" class="fragment" alt="" style="width: 80%">
+					<img src="images/pepe-silvia.jpg" class="fragment" alt="" style="width: 65%">
 					</div>
 				</section>
 				<section>
 					<img src="images/drake-meme.png" alt="">
+				</section>
+				<section>
+					<h2>Web3 PHP</h2>
+					<ul class="">
+						<li class="">Подпись транзакций</li>
+						<li class="">Вызовы смарт-контрактов</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Перевод ETH</h3>
+					<pre>
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="|3,7|4,12|10|6-15">
+							use Web3p\EthereumTx\Transaction;
+
+							$nonce = $nodeClient->call('eth_getTransactionCount', [$fromAddress, "pending"]);
+							$amountInHex = dechex((int)'1000000000000000000'); // 1 ETH
+
+							$transaction = new Transaction([
+								'nonce' => $nonce,
+								'from' => $addressFrom,
+								'to' => $addressTo,
+								'gas' => '0x' . self::ETHEREUM_GAS_LIMIT, // 210000
+								'gasPrice' => $gasPrice,
+								'value' => '0x'. $amountInHex,
+							]);
+
+							$signedTransaction = $transaction->sign("your private key");
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>Перевод ERC-20 токена</h3>
+					<pre>
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="|4,13|16|14|8,17">
+							use Web3p\EthereumTx\Transaction;
+
+							$nonce = $nodeClient->call('eth_getTransactionCount', [$fromAddress, "pending"]);
+							$smartContractAddress = '0xdac17f958d2ee523a2206206994597c13d831ec7'; // USDT
+
+							// ...
+
+							$data = ...;
+
+							$transaction = new Transaction([
+								'nonce' => $nonce,
+								'from' => $addressFrom,
+								'to' => $smartContractAddress,
+								'gas' => self::TOKEN_TRANSFER_GAS_LIMIT, // 150000-300000
+								'gasPrice' => $gasPrice,
+								'value' => '0x0',
+								'data' => $data
+							]);
+
+							$signedTransaction = $transaction->sign("your private key");
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h5 style="text-align: left">Contract:</h5>
+					<pre>
+						<code class="language-js" data-trim data-noescape>
+							function transfer(address _to, uint256 amount) public {
+								// ...
+							}
+						</code>
+					</pre>
+					<h5 style="text-align: left" class="fragment" data-fragment-index="1">PHP:</h5>
+					<pre class="fragment" data-fragment-index="1">
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="1-3|5-7|9-11">
+							$methodHash = \kornrunner\Keccak::hash('transfer(address,uint256)', 256);
+							$methodId = '0x' . substr($methodHash, 0, 8);
+							// 0xa9059cbb
+
+							$destAddress = '0x5d0c1c863c637327da8966241ebd6b2f5c4f6945';
+							$addressTo = str_pad(substr($destAddress, 2), 64, '0', STR_PAD_LEFT);
+							// 0000000000000000000000005d0c1c863c637327da8966241ebd6b2f5c4f6945
+
+							$valueInHex = dechex((int)'250000000'); // 250 USDT
+							$value = str_pad($valueInHex, 64, '0', STR_PAD_LEFT);
+							// 000000000000000000000000000000000000000000000000000000000ee6b280
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape>
+							$methodHash = \kornrunner\Keccak::hash('transfer(address,uint256)', 256);
+							$methodId = '0x' . substr($methodHash, 0, 8);
+							// 0xa9059cbb
+
+							$destAddress = '0x5d0c1c863c637327da8966241ebd6b2f5c4f6945';
+							$addressTo = str_pad(substr($destAddress, 2), 64, '0', STR_PAD_LEFT);
+							// 0000000000000000000000005d0c1c863c637327da8966241ebd6b2f5c4f6945
+
+							$valueInHex = dechex((int)'250000000'); // 250 USDT
+							$value = str_pad($valueInHex, 64, '0', STR_PAD_LEFT);
+							// 000000000000000000000000000000000000000000000000000000000ee6b280
+						</code>
+					</pre>
+					<div class="r-stack">
+						<img class="fragment" data-fragment-index="4" src="images/erc20-data-formatted.png" alt="">
+						<img class="fragment" data-fragment-index="5" src="images/erc20-data-raw.png" alt="">
+					</div>
+					<a class="fragment explorer-link" data-fragment-index="4"
+					   href="https://etherscan.io/tx/0xa16691f915acd67ec0139576f5bcdcd3d0fb573f31566ca0ff6aab128c35f314">https://etherscan.io/tx/0xa16691f915acd67ec0139576f5bcdcd3d0fb573f31566ca0ff6aab128c35f314</a>
+				</section>
+				<section>
+					<pre>
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="7,16|">
+							use Web3p\EthereumTx\Transaction;
+
+							$nonce = $nodeClient->call('eth_getTransactionCount', [$fromAddress, "pending"]);
+
+							// ...
+
+							$data = '0x' . $methodId . $addressTo . $value;
+
+							$transaction = new Transaction([
+								'nonce' => $nonce,
+								'from' => $addressFrom,
+								'to' => $smartContractAddress,
+								'gas' => '0x' . self::TOKEN_TRANSFER_GAS_LIMIT, // 150000-300000
+								'gasPrice' => $gasPrice,
+								'value' => '0x0',
+								'data' => $data
+							]);
+
+							$signedTransaction = $transaction->sign("your private key");
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h2>ERC-20 ABI</h2>
+					<pre>
+						<code class="language-json" data-trim data-noescape>
+							{
+								"name": "transfer",
+								"constant": false,
+								"inputs": [
+									{
+										"name": "_to",
+										"type": "address"
+									},
+									{
+										"name": "_value",
+										"type": "uint256"
+									}
+								],
+								"outputs": [],
+								"payable": false,
+								"stateMutability": "nonpayable",
+								"type": "function"
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h2>Pancake Swap</h2>
+					<ol>
+						<li>Адрес контракта</li>
+						<li>ABI контракта</li>
+						<li>Сигнатура метода</li>
+					</ol>
+				</section>
+				<section>
+					<h2>PancakeRouter ABI</h2>
+					<img src="images/pancake-router-abi-2.png" alt="">
+					<a class="explorer-link"
+					   href="https://etherscan.io/address/0xeff92a263d31888d860bd50809a8d171709b7b1c">https://etherscan.io/address/0xeff92a263d31888d860bd50809a8d171709b7b1c</a>
+				</section>
+				<section>
+					<p>composer require web3p/web3.php</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js" data-trim data-noescape>
+							function swapTokensForExactTokens(
+								uint256 amountOut,
+								uint256 amountInMax,
+								address[] path,
+								address to)
+							external payable returns (uint256 amountIn);
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h5 style="text-align: left">Contract:</h5>
+					<pre>
+						<code class="language-js" data-trim data-noescape>
+							function getAmountsIn(
+								uint amountOut,
+								address[] memory path)
+							internal view returns (uint[] memory amounts);
+						</code>
+					</pre>
+
+				</section>
+				<section>
+					<pre>
+						<code class="language-json" data-trim data-noescape>
+						{
+							"inputs": [
+								{"internalType": "uint256", "name": "amountOut", "type": "uint256"},
+								{"internalType": "uint256", "name": "amountInMax", "type": "uint256"},
+								{"internalType": "address[]", "name": "path", "type": "address[]"},
+								{"internalType": "address", "name": "to", "type": "address"},
+								{"internalType": "uint256", "name": "deadline", "type": "uint256"}
+							],
+							"name": "swapTokensForExactTokens",
+							"outputs": [
+								{
+									"internalType": "uint256[]",
+									"name": "amounts",
+									"type": "uint256[]"
+								}
+							],
+							"stateMutability": "nonpayable",
+							"type": "function"
+						}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<img src="images/graves.jpg" alt="">
+				</section>
+				<section>
+					<h3><s>Кладбище</s> Список библиотек</h3>
+					<ul style="width: 104%">
+						<li><a href="https://github.com/digitaldonkey/ethereum-php">Ethereum-PHP</a> 3 года назад</li>
+						<li><a href="https://github.com/iexbase/tron-api">Tron API</a> 2 года назад</li>
+						<li><a href="https://github.com/foxrp/rippled-php 6">Rippled PHP</a> лет назад</li>
+						<li><a href="https://github.com/zulucrypto/stellar-api">Stellar API</a>  6 лет назад</li>
+						<li><a href="https://github.com/murich/php-cryptocurrency-address-validation">php cryptocurrency address validation</a> 7 лет назад</li>
+					</ul>
 				</section>
 			</div>
 		</div>
