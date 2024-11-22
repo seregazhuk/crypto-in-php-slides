@@ -32,12 +32,19 @@
 			td.hljs-ln-code {
 				white-space: pre;
 			}
-			.reveal pre {
-				font-size: .45em;
-			}
+
 			.reveal a.explorer-link {
 				font-size: 0.5em;
 			}
+
+			.reveal pre.small {
+				font-size: .55em;
+			}
+
+			.reveal pre.extra-small {
+				font-size: .45em;
+			}
+
 			.reveal pre {
 				width: auto;
 			}
@@ -45,8 +52,28 @@
 				max-height: none;
 			}
 
-			.reveal .db-rows {
+			.horizontal {
+				display: flex;
+				width: 100%;
+				justify-content: space-between;
+			}
+			.horizontal > * {
+				flex-grow: 1;
+			}
+			.horizontal-half > * {
+				flex-grow: 0 !important;
+				width: calc(50% - var(--r-block-margin) * 2) !important;
+			}
+
+			.reveal .db-rows-extra-small {
+				font-size: 0.45em;
+			}
+
+			.reveal .db-rows-small {
 				font-size: 0.7em;
+			}
+
+			.reveal .db-rows, .reveal .db-rows-small, .reveal .db-rows-extra-small {
 				> thead {
 					background-color: #f2f2f2;
 				}
@@ -81,7 +108,11 @@
 			.greeting {
 				color: white;
 				font-size: 0.9em;
-				text-shadow: 1px 1px 10px #000;
+			}
+
+			.text-shadow {
+				text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black,
+				1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;
 			}
 
 			.reveal .text-left {
@@ -92,16 +123,18 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+				<section data-background-image="images/face.jpg" data-background-size="contain">
+				</section>
 				<section>
-					<div class="greeting">
+					<div class="greeting text-shadow">
 						<img src="images/greeting.jpg" alt="" style="width: 100%">
-						<div class="bottom-center greeting">
-							Выйди и расскажи гостям <br>про эту свою крипту
+						<div class="bottom-center greeting" style="font-size: 1.2em; width: 60%">
+							Выйди и расскажи гостям про эту свою крипту
 						</div>
 					</div>
 				</section>
 				<section>
-					<div class="greeting">
+					<div class="greeting text-shadow">
 						<img src="images/crypto-team.jpg" alt="">
 						<div class="bottom-center" style="left: 34%">Девопсы</div>
 						<div class="bottom-center" style="top: 66%">Крипто-<br/>команда</div>
@@ -109,7 +142,27 @@
 					</div>
 				</section>
 				<section>
-					<img src="images/crypto-team-2.jpg" alt="">
+					<h2></h2>
+					<ul>
+						<li>Прием крипты/фиата</li>
+						<li>Создание транзакции, подпись, отправка в блокчейн</li>
+						<li>Мониторинг адресов/транзакций в блокчейне</li>
+						<li>Работа с биржами/смарт-контрактами</li>
+					</ul>
+				</section>
+				<section>
+					<div class="greeting text-shadow">
+						<img src="images/crypto-team-2.jpg" alt="">
+						<div class="bottom-center " style="top: 80%">Крипто-команда</div>
+					</div>
+				</section>
+				<section>
+					<div class="greeting">
+						<img src="images/pepe-suit.jpg" alt="">
+						<div class="bottom-center" style="top: 80%">Давайте продавать
+							<del>хомякам</del> крипту
+						</div>
+					</div>
 				</section>
 				<section>
 					<h2>Структуры данных</h2>
@@ -132,7 +185,7 @@
 					</pre>
 				</section>
 				<section>
-					<table class="db-rows">
+					<table class="db-rows-extra-small">
 						<thead>
 							<tr>
 								<th>hash</th>
@@ -162,34 +215,32 @@
 				</section>
 				<section>
 					<h2>Блокчейны и сети</h2>
-					<div class="container">
-						<div class="col-sm-4">
-							<h4>Bitcoin</h4>
-							<ul>
-								<li>Mainnet</li>
-								<li>Testnet</li>
-							</ul>
-						</div>
-						<div class="col-sm-4">
-							<h4>Ethereum</h4>
-							<ul>
-								<li>Sepolia Testnet</li>
-								<li>Holesky Testnet</li>
-							</ul>
-						</div>
-						<div class="col-sm-4">
-							<h4>Tron</h4>
-							<ul>
-								<li>Mainnet</li>
-								<li>Nile Testnet</li>
-								<li>Shasta Testnet</li>
-							</ul>
-						</div>
-					</div>
+					<table class="db-rows">
+						<thead>
+						<tr>
+							<th>Блокчейн</th>
+							<th>Сети</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Bitcoin</td>
+								<td>Mainnet, testnet</td>
+							</tr>
+							<tr>
+								<td>Mainnet</td>
+								<td>Sepolia Testnet, Holesky Testnet</td>
+							</tr>
+							<tr>
+								<td>Tron</td>
+								<td>Nile Testnet, Shasta Testnet</td>
+							</tr>
+						</tbody>
+					</table>
 				</section>
 				<section>
 					<div class="r-stack">
-						<table class="db-rows fragment fade-out" data-fragment-index="0">
+						<table class="db-rows-extra-small fragment fade-out" data-fragment-index="0">
 							<thead>
 								<tr>
 									<th>hash</th>
@@ -216,7 +267,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<table class="db-rows fragment current-visible" style="font-size: 0.55em;" data-fragment-index="0">
+						<table class="db-rows-extra-small fragment current-visible" data-fragment-index="0">
 							<thead>
 							<tr>
 								<th>hash</th>
@@ -246,7 +297,7 @@
 							</tr>
 							</tbody>
 						</table>
-						<table class="db-rows fragment" style="font-size: 0.55em;">
+						<table class="db-rows-extra-small fragment">
 							<thead>
 							<tr>
 								<th>hash</th>
@@ -387,7 +438,7 @@
 				<section>
 					<div class="r-stack">
 						<h3 class="fragment fade-out" data-fragment-index="0">Asset = Blockchain + Currency</h3>
-						<p class="fragment current-visible" data-fragment-index="0">Asset = Blockchain (name + network) + Currency + AssetID</p>
+						<h3 style="width: 106%" class="fragment current-visible" data-fragment-index="0">Asset = Blockchain (name + network) + Currency + AssetID</h3>
 					</div>
 				</section>
 				<section>
@@ -405,7 +456,7 @@
 					</pre>
 				</section>
 				<section>
-					<pre style="width: 104%;">
+					<pre class="small">
 						<code class="language-php" data-trim data-noescape>
 							public static function USDT_TRON(): self
 							{
@@ -414,7 +465,9 @@
 
 							public static function PEPE_ETHEREUM(): self
 							{
-								return new self('PEPE_ETHEREUM', 'PEPE', Blockchain::ethereum());
+								return new self(
+									'PEPE_ETHEREUM', 'PEPE', Blockchain::ethereum()
+								);
 							}
 
 							public static function USDT_ETHEREUM_SEPOLIA(): self
@@ -428,7 +481,7 @@
 				</section>
 				<section>
 					<div class="r-stack">
-						<table class="db-rows fragment fade-out" data-fragment-index="0" style="font-size: 0.55em;">
+						<table class="db-rows-extra-small fragment fade-out" data-fragment-index="0">
 							<thead>
 							<tr>
 								<th>hash</th>
@@ -474,7 +527,7 @@
 							</tr>
 							</tbody>
 						</table>
-						<table class="db-rows fragment current-visible" data-fragment-index="0" style="font-size: 0.55em;">
+						<table class="db-rows-extra-small fragment current-visible" data-fragment-index="0">
 							<thead>
 							<tr>
 								<th>hash</th>
@@ -539,14 +592,22 @@
 					</pre>
 				</section>
 				<section>
-					<h2>Money</h2>
+					<h2>Деньги</h2>
 					<img src="images/money-pepe.jpg" alt="" style="width: 80%">
+				</section>
+				<section>
+					<h2>Работа с деньгами</h2>
+					<ul>
+						<li>Очень большие и очень маленькие числа</li>
+						<li>Конвертации между валютами</li>
+						<li>Вычисление комиссий</li>
+					</ul>
 				</section>
 				<section>
 					<img src="images/money-libs.png" alt="">
 				</section>
 				<section>
-					<table class="db-rows">
+					<table class="db-rows-small">
 						<thead>
 						<tr>
 							<th>MoneyPHP</th>
@@ -567,14 +628,14 @@
 							<td>Парсеры, форматтеры, конвертеры</td>
 						</tr>
 						<tr>
-							<td class="fragment highlight-blue">Поддежрка криптовалют из коробки</td>
+							<td class="fragment highlight-blue">Поддержка криптовалют из коробки</td>
 							<td>Нужно добавлять всё самому</td>
 						</tr>
 						</tbody>
 					</table>
 				</section>
 				<section>
-					<pre style="min-height: 500px;" >
+					<pre class="small">
 						<code class="language-php" data-trim data-noescape data-line-numbers="1-17|3,4,10,13-14">
 							class Transaction
 							{
@@ -585,19 +646,23 @@
 								public function __construct(
 									private string $addressFrom,
 									private string $addressTo,
-									private Money $amount,
+									Money $amount,
 									private readonly Asset $asset
 								) {
 									$this->amount = $amount->getAmount();
 									$this->currency = $amount->getCurrency();
 									$this->blockchain = $asset->blockchain;
 								}
+
+								public function getAmount(): Money {
+									return new Money($this->amount, $this->currency);
+								}
 							}
 						</code>
 					</pre>
 				</section>
 				<section>
-					<pre style="width: 100%" >
+					<pre class="small">
 						<code class="language-php" data-trim data-noescape data-line-numbers="1-15|5,12">
 							final readonly class Asset
 							{
@@ -618,7 +683,7 @@
 					</pre>
 				</section>
 				<section>
-					<table class="db-rows" style="font-size: 0.55em;">
+					<table class="db-rows-extra-small">
 						<thead>
 						<tr>
 							<th>hash</th>
@@ -666,9 +731,16 @@
 					</table>
 				</section>
 				<section>
-					<h2>Адреса</h2>
-					<div class="container">
-						<div class="col-sm-4">
+						<div class="greeting text-shadow">
+							<img src="images/pepe-businessman.jpg" alt="">
+							<div class="bottom-center greeting" style="font-size: 1.2em; width: 50%">
+								Нужно добавить Bitcoin
+							</div>
+						</div>
+				</section>
+				<section>
+					<div class="horizontal">
+						<div class="">
 							<h4>UTXO</h4>
 							<ul>
 								<li>Bitcoin</li>
@@ -676,7 +748,7 @@
 								<li>Litecoin</li>
 							</ul>
 						</div>
-						<div class="col-sm-4">
+						<div class="">
 							<h4>Account-based</h4>
 							<ul>
 								<li>Ethereum</li>
@@ -694,6 +766,15 @@
 					</p>
 				</section>
 				<section>
+					<h3>Account-Based</h3>
+					<p>Сделать перевод 2 ETH на какой-то адрес.</p>
+					<h3>UTXO</h3>
+					<p>Сделать перевод 1 BTC на один адрес, 2 BTC на другой адрес и еще 3 BTC на третий адрес.</p>
+				</section>
+				<section>
+						<img src="images/pepe-computer.jpg" alt="" style="height: 70%; width: 70%">
+				</section>
+				<section>
 					<h2>Inputs/Outputs</h2>
 					<table class="db-rows" style="font-size: 0.55em;">
 						<thead>
@@ -708,41 +789,109 @@
 						<tbody>
 							<tr class="fragment highlight-current-blue" data-fragment-index="0">
 								<td>11</td>
-								<td>0x092A754610F82e3E7b6776256311e7D164DeBB6B</td>
-								<td>incoming</td>
+								<td>0x092A754610...e7D164DeBB6B</td>
+								<td>input</td>
 								<td>100</td>
 								<td>USDT</td>
 							</tr>
 							<tr class="fragment highlight-current-blue" data-fragment-index="0">
 								<td>11</td>
-								<td>0x911A978F0CAC392079b51DB03E6f3027Dfe6F96E</td>
-								<td>outgoing</td>
+								<td>0x911A978FC3...6f3027Dfe6F96E</td>
+								<td>output</td>
 								<td>100</td>
 								<td>USDT</td>
 							</tr>
 							<tr class="fragment highlight-current-blue" data-fragment-index="1">
 								<td>12</td>
-								<td>bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq</td>
-								<td>incoming</td>
+								<td>bc1qar0srrr7xfkvy...e59gtzzwf5mdq</td>
+								<td>output</td>
 								<td>0.003</td>
 								<td>BTC</td>
 							</tr>
 							<tr class="fragment highlight-current-blue" data-fragment-index="1">
 								<td>12</td>
-								<td>bc1q2dyp7355r2ahkrxngq3y56mulsan3y42sjdsuv</td>
-								<td>incoming</td>
+								<td>bc1q2dyp7355r2a...lsan3y42sjdsuv</td>
+								<td>output</td>
 								<td>0.007 </td>
 								<td>BTC</td>
 							</tr>
 							<tr class="fragment highlight-current-blue" data-fragment-index="1">
 								<td>12</td>
-								<td>bc1zw508d6qejxtdg4y5r3zarvaryvg6kdaj</td>
-								<td>outgoing</td>
+								<td>bc1zw508d6qejxtd...zarvaryvg6kdaj</td>
+								<td>input</td>
 								<td>0.01 </td>
 								<td>BTC</td>
 							</tr>
 						</tbody>
 					</table>
+				</section>
+				<section>
+					<pre class="extra-small">
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="|16-20,22-26">
+								class Address
+								{
+									private string $amount;
+									private Currency $currency;
+
+									private function __construct(
+										Money $amount,
+										private readonly string $address,
+										private readonly AddressType $type,
+										private readonly Transaction $transaction,
+									) {
+										$this->amount = $amount->getAmount();
+										$this->cryptocurrency = $amount->getCurrency();
+									}
+
+									public static function input(
+										string $address, Money $amount, Transaction $transaction
+									): self {
+										return new self($address, AddressType::INPUT, $transaction, $amount);
+									}
+
+									public static function output(
+										string $address, Money $amount, Transaction $transaction
+									): self {
+										return new self($address, AddressType::OUTGOING, $transaction, $amount);
+									}
+								}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre class="extra-small">
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="|7-16|18-21|18-21,23-26">
+							class Transaction
+							{
+								private readonly string $amount;
+								private readonly Currency $currency;
+								private readonly Blockchain $blockchain;
+
+								private function __construct(
+									Money $amount,
+									/** @var Address[] $addresses */
+									private array $addresses,
+									private readonly Asset $asset,
+								) {
+									$this->amount = $amount->getAmount();
+									$this->currency = $amount->getCurrency();
+									$this->blockchain = $asset->blockchain;
+								}
+
+								public static function utxo(
+									// ...
+									array $inputs, array $outputs,
+								): self { }
+
+								public static function accountBased(
+									// ...
+									Addres $addressFrom, Addres $addressTo,
+								): self { }
+							}
+						</code>
+					</pre>
 				</section>
 				<section>
 					<h2>Транзакция</h2>
@@ -758,7 +907,7 @@
 					<img src="images/transaction-flow.svg" alt="">
 				</section>
 				<section>
-					<pre style="width: 110%">
+					<pre class="extra-small">
 						<code class="language-php"
 							  data-line-numbers="1-20|8-18|8-9|11-14|11-18"
 							  data-trim data-noescape style="max-height: 520px">
@@ -787,7 +936,7 @@
 					</pre>
 				</section>
 				<section>
-					<pre style="width: 100%">
+					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape style="max-height: 520px">
 							#[ActivityInterface]
 							final class WalletActivity
@@ -813,7 +962,7 @@
 					</pre>
 				</section>
 				<section>
-					<pre style="width: 100%">
+					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape style="max-height: 520px">
 							#[ActivityInterface]
 							final class BroadcastActivity
@@ -837,7 +986,7 @@
 					</pre>
 				</section>
 				<section>
-					<pre style="width: 100%">
+					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape style="max-height: 520px">
 							#[ActivityInterface]
 							final class ExplorerActivity
@@ -869,7 +1018,6 @@
 						<li class="fragment highlight-current-blue">Failed on blockchain</li>
 						<li class="fragment highlight-current-blue">Replaced</li>
 					</ul>
-					<img src="images/pepe-silvia.jpg" class="fragment" alt="" style="width: 65%">
 					</div>
 				</section>
 				<section>
@@ -884,7 +1032,7 @@
 				</section>
 				<section>
 					<h3>Перевод ETH</h3>
-					<pre>
+					<pre class="small">
 						<code class="language-php" data-trim data-noescape
 							  data-line-numbers="|3-7|9,17|15|11-20">
 							use Web3p\EthereumTx\Transaction;
@@ -910,15 +1058,16 @@
 					</pre>
 				</section>
 				<section>
-					<pre>
+					<pre class="small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|1-5|7-9">
+							  data-line-numbers="|1-5|7-10">
 							$balanceResponse = $nodeClient->call(
 								"eth_getBalance", [$walletAddress, "latest"]
 							);
-							$rawBalance = hexdec($balanceResponse->getResult()); // balance in Wei
-							$balance = new Money($rawBalance, new Currency('ETH'));
+							// balance in Wei
+							$rawBalance = hexdec($balanceResponse->getResult());
 
+							$balance = new Money($rawBalance, new Currency('ETH'));
 							if ($balance->lessThan($requestedAmount)) {
 								throw new NotEnoughBalanceException($walletAddress, $balance);
 							}
@@ -927,7 +1076,7 @@
 				</section>
 				<section>
 					<h3>Перевод ERC-20 токена</h3>
-					<pre>
+					<pre class="small">
 						<code class="language-php" data-trim data-noescape>
 							use Web3p\EthereumTx\Transaction;
 
@@ -942,8 +1091,8 @@
 				</section>
 				<section>
 					<h2>ERC-20</h2>
-					<pre>
-						<code class="language-js" data-trim data-noescape style="font-size: 0.85em"
+					<pre class="extra-small">
+						<code class="language-js" data-trim data-noescape
 							  data-line-numbers="|5,6">
 							function name() public view returns (string)
 							function symbol() public view returns (string)
@@ -959,7 +1108,7 @@
 				</section>
 				<section>
 					<h3>Application Binary Interface (ABI)</h3>
-					<pre>
+					<pre class="extra-small">
 						<code class="language-json" data-trim data-noescape>
 							{
 								"type": "function",
@@ -972,9 +1121,9 @@
 								],
 								"payable": false
 							}
-					</code>
+						</code>
 					</pre>
-					<pre>
+					<pre class="extra-small">
 						<code class="language-json" data-trim data-noescape>
 						{
 							"type": "function",
@@ -998,7 +1147,7 @@
 				</section>
 				<section>
 					<h2>ERC-20: balanceOf</h2>
-					<pre>
+					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape
 							  data-line-numbers="|1,2|3,5-6|7-14">
 							$erc20AbiJson = '...';
@@ -1026,7 +1175,7 @@
 				</section>
 				<section>
 					<h3>Перевод ERC-20 токена</h3>
-					<pre>
+					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape
 							  data-line-numbers="|1,10|13|11|5,14">
 
@@ -1052,7 +1201,7 @@
 				</section>
 				<section>
 					<h5 class="text-left">Contract:</h5>
-					<pre>
+					<pre class="extra-small">
 						<code class="language-js" data-trim data-noescape>
 							function transfer(address _to, uint256 amount) public {
 								// ...
@@ -1060,7 +1209,7 @@
 						</code>
 					</pre>
 					<h5 class="fragment text-left" data-fragment-index="1">PHP:</h5>
-					<pre class="fragment" data-fragment-index="1">
+					<pre class="fragment extra-small" data-fragment-index="1">
 						<code class="language-php" data-trim data-noescape data-line-numbers="|1,10">
 							$data = '0x' . $ethAbi->getData('transfer', $addressTo, $amount);
 
@@ -1079,7 +1228,7 @@
 					</pre>
 				</section>
 				<section>
-					<pre>
+					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape>
 							// Transfer 250 USDT to 0x5d0c1c863c637327da8966241ebd6b2f5c4f6945
 
@@ -1115,7 +1264,9 @@
 				</section>
 				<section>
 					<h2>Спасибо</h2>
-					<img src="images/fear-and-loathing.jpg" alt="">
+					<img src="images/fear-and-loathing.jpg" alt="" style="width: 50%;">
+				</section>
+				<section data-background-image="images/end.jpg" data-background-size="contain">
 				</section>
 			</div>
 		</div>
