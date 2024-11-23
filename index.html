@@ -52,6 +52,12 @@
 				max-height: none;
 			}
 
+			.reveal table.db-rows.font-left {
+				td {
+					text-align: left;
+				}
+			}
+
 			.horizontal {
 				display: flex;
 				width: 100%;
@@ -69,11 +75,15 @@
 				font-size: 0.45em;
 			}
 
+			.reveal .db-rows-very-small {
+				font-size: .50em;
+			}
+
 			.reveal .db-rows-small {
 				font-size: 0.7em;
 			}
 
-			.reveal .db-rows, .reveal .db-rows-small, .reveal .db-rows-extra-small {
+			.reveal .db-rows, .reveal .db-rows-small, .reveal .db-rows-extra-small, .db-rows-very-small {
 				> thead {
 					background-color: #f2f2f2;
 				}
@@ -90,6 +100,10 @@
 				tbody tr:last-child td {
 					border-bottom: 1px solid black;
 				}
+
+				tbody td.borderless, tbody tr:last-child td.borderless {
+					border: 0;
+				}
 			}
 
 			.greeting {
@@ -98,10 +112,10 @@
 
 				.bottom-center {
 					position: absolute;
-					bottom: 8px;
 					top: 80%;
 					left: 50%;
 					transform: translate(-50%, -50%);
+					background: black; border-radius: 5px;
 				}
 			}
 
@@ -136,9 +150,9 @@
 				<section>
 					<div class="greeting text-shadow">
 						<img src="images/crypto-team.jpg" alt="">
-						<div class="bottom-center" style="left: 34%">Девопсы</div>
-						<div class="bottom-center" style="top: 66%">Крипто-<br/>команда</div>
-						<div class="bottom-center" style="left: 67%">Архитекторы</div>
+						<div class="bottom-center" style="left: 34%; padding: 5px">Девопсы</div>
+						<div class="bottom-center" style="top: 66%; padding: 5px">Крипто-<br/>команда</div>
+						<div class="bottom-center" style="left: 67%; padding: 5px">Архитекторы</div>
 					</div>
 				</section>
 				<section>
@@ -153,13 +167,13 @@
 				<section>
 					<div class="greeting text-shadow">
 						<img src="images/crypto-team-2.jpg" alt="">
-						<div class="bottom-center " style="top: 80%">Крипто-команда</div>
+						<div class="bottom-center " style="top: 80%; padding: 10px">Крипто-команда</div>
 					</div>
 				</section>
 				<section>
 					<div class="greeting">
 						<img src="images/pepe-suit.jpg" alt="">
-						<div class="bottom-center" style="top: 80%">Давайте продавать
+						<div class="bottom-center" style="top: 80%; background: black; border-radius: 5px">Давайте продавать
 							<del>хомякам</del> крипту
 						</div>
 					</div>
@@ -185,7 +199,7 @@
 					</pre>
 				</section>
 				<section>
-					<table class="db-rows-extra-small">
+					<table class="db-rows-very-small">
 						<thead>
 							<tr>
 								<th>hash</th>
@@ -215,7 +229,7 @@
 				</section>
 				<section>
 					<h2>Блокчейны и сети</h2>
-					<table class="db-rows">
+					<table class="db-rows font-left" style="width: 115%">
 						<thead>
 						<tr>
 							<th>Блокчейн</th>
@@ -225,22 +239,22 @@
 						<tbody>
 							<tr>
 								<td>Bitcoin</td>
-								<td>Mainnet, testnet</td>
+								<td>Mainnet, Testnet</td>
 							</tr>
 							<tr>
-								<td>Mainnet</td>
-								<td>Sepolia Testnet, Holesky Testnet</td>
+								<td>Ethereum</td>
+								<td>Mainnet, Sepolia Testnet, Holesky Testnet</td>
 							</tr>
 							<tr>
 								<td>Tron</td>
-								<td>Nile Testnet, Shasta Testnet</td>
+								<td>Mainnet, Nile Testnet, Shasta Testnet</td>
 							</tr>
 						</tbody>
 					</table>
 				</section>
 				<section>
 					<div class="r-stack">
-						<table class="db-rows-extra-small fragment fade-out" data-fragment-index="0">
+						<table class="db-rows-very-small fragment fade-out" data-fragment-index="0">
 							<thead>
 								<tr>
 									<th>hash</th>
@@ -314,7 +328,7 @@
 								<td>0xc407...24308</td>
 								<td>0x4924...f7CF9</td>
 								<td>100</td>
-								<td>ETH</td>
+								<td>USDT</td>
 								<td>ethereum_mainnet</td>
 							</tr>
 							<tr>
@@ -419,18 +433,22 @@
 						<tr>
 							<td>ETH</td>
 							<td>ethereum_mainnet</td>
+							<td class="borderless fragment" data-fragment-index="1">&#9989</td>
 						</tr>
 						<tr>
 							<td>PEPE</td>
 							<td>ethereum_sepolia</td>
+							<td class="borderless fragment" data-fragment-index="1">&#9989</td>
 						</tr>
 						<tr>
-							<td>ETH</td>
-							<td>ethereum_mainnet</td>
+							<td>USDT</td>
+							<td>bitcoin_mainnet</td>
+							<td class="borderless fragment" data-fragment-index="1">&#x274C</td>
 						</tr>
 						<tr>
-							<td>ETH</td>
+							<td>BTC</td>
 							<td>ethereum_sepolia</td>
+							<td class="borderless fragment" data-fragment-index="1">&#x274C</td>
 						</tr>
 						</tbody>
 					</table>
@@ -572,7 +590,8 @@
 				</section>
 				<section>
 					<pre>
-						<code class="language-php" data-trim data-noescape data-line-numbers="1-15|3,9,12">
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="|3,4,10,12,13">
 							class Transaction
 							{
 								private readonly string $currency;
@@ -604,6 +623,14 @@
 					</ul>
 				</section>
 				<section>
+					<div class="greeting text-shadow">
+						<img src="images/meme-explaining.jpg" alt="">
+						<div class="bottom-center" style="top: 82%; background: black; border-radius: 5px">
+							Мы будем использовать float для хранения денег
+						</div>
+					</div>
+				</section>
+				<section>
 					<img src="images/money-libs.png" alt="">
 				</section>
 				<section>
@@ -616,7 +643,7 @@
 						</thead>
 						<tbody>
 						<tr>
-							<td>Зрелая библиотека (c 2011 года)</td>
+							<td>Зрелая библиотека (c 2011 г.)</td>
 							<td>До сих пор нет версии 1.0</td>
 						</tr>
 						<tr>
@@ -633,6 +660,22 @@
 						</tr>
 						</tbody>
 					</table>
+				</section>
+				<section>
+					<h2>Паттерн Money</h2>
+					<pre>
+						<code class="language-php" data-trim>
+							final class Money implements JsonSerializable
+							{
+								public function __construct(
+									private readonly int|string $amount,
+									private readonly Currency $currency
+								) {
+									/* ... */
+								}
+							}
+						</code>
+					</pre>
 				</section>
 				<section>
 					<pre class="small">
@@ -732,8 +775,8 @@
 				</section>
 				<section>
 						<div class="greeting text-shadow">
-							<img src="images/pepe-businessman.jpg" alt="">
-							<div class="bottom-center greeting" style="font-size: 1.2em; width: 50%">
+							<img src="images/pepe-bitcoin.jpg" alt="" style="width: 70%">
+							<div class="bottom-center greeting" style="padding: 10px; background: black; border-radius: 5px">
 								Нужно добавить Bitcoin
 							</div>
 						</div>
@@ -1248,7 +1291,7 @@
 					   href="https://etherscan.io/tx/0xa16691f915acd67ec0139576f5bcdcd3d0fb573f31566ca0ff6aab128c35f314">https://etherscan.io/tx/0xa16691f915acd67ec0139576f5bcdcd3d0fb573f31566ca0ff6aab128c35f314</a>
 				</section>
 				<section>
-					<img src="images/graves.jpg" alt="">
+					<img src="images/pepe-grave.jpg" alt="" style="width: 70%">
 				</section>
 				<section>
 					<h3><s>Кладбище</s> Список библиотек</h3>
@@ -1259,7 +1302,7 @@
 						<li><a href="https://github.com/foxrp/rippled-php">Rippled PHP</a> 6 лет назад</li>
 						<li><a href="https://github.com/zulucrypto/stellar-api">Stellar API</a> 6 лет назад</li>
 						<li><a href="https://github.com/murich/php-cryptocurrency-address-validation">php cryptocurrency address validation</a> 7 лет назад</li>
-						<li><a href="https://github.com/kornrunner/php-keccak">php-keccak</a>3 года назад</li>
+						<li><a href="https://github.com/kornrunner/php-keccak">php-keccak</a> 3 года назад</li>
 					</ul>
 				</section>
 				<section>
