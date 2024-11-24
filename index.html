@@ -364,9 +364,7 @@
 						<code class="language-php" data-trim data-noescape>
 							enum BlockchainName: string
 							{
-								case BITCOIN = 'bitcoin';
 								case ETEREUM = 'ethereum';
-								case TRON = 'tron';
 							}
 						</code>
 					</pre>
@@ -377,6 +375,7 @@
 							final readonly class Blockchain
 							{
 								private const NETWORK_MAINNET = 'mainnet';
+
 								public string $network;
 
 								public function __construct(
@@ -410,10 +409,10 @@
 							class Transaction
 							{
 								public function __construct(
-									private string $addressFrom,
-									private string $addressTo,
-									private string $amount,
-									private string $currency,
+									private readonly string $addressFrom,
+									private readonly string $addressTo,
+									private readonly string $amount,
+									private readonly string $currency,
 									private readonly Blockchain $blockchain
 								) {
 								}
@@ -476,16 +475,16 @@
 				<section>
 					<pre class="small">
 						<code class="language-php" data-trim data-noescape>
-							public static function USDT_TRON(): self
-							{
-								return new self('USDT_TRON', 'USDT', Blockchain::tron());
-							}
-
 							public static function PEPE_ETHEREUM(): self
 							{
 								return new self(
 									'PEPE_ETHEREUM', 'PEPE', Blockchain::ethereum()
 								);
+							}
+
+							public static function USDT_ETHEREUM(): self
+							{
+								return new self('USDT_ETHEREUM', 'USDT', Blockchain::ethereum());
 							}
 
 							public static function USDT_ETHEREUM_SEPOLIA(): self
@@ -679,7 +678,8 @@
 				</section>
 				<section>
 					<pre class="small">
-						<code class="language-php" data-trim data-noescape data-line-numbers="1-17|3,4,10,13-14">
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="|3,4,10,13-14,18-20">
 							class Transaction
 							{
 								private readonly string $amount;
@@ -706,7 +706,7 @@
 				</section>
 				<section>
 					<pre class="small">
-						<code class="language-php" data-trim data-noescape data-line-numbers="1-15|5,12">
+						<code class="language-php" data-trim data-noescape data-line-numbers="1-15|5,13">
 							final readonly class Asset
 							{
 								private function __construct(
@@ -715,10 +715,12 @@
 									public Blockchain $blockchain,
 								) {}
 
-								public static function USDT_TRON(): self
+								public static function USDT_ETHEREUM(): self
 								{
 									return new self(
-										'USDT_TRON', new Currency('USDT'), Blockchain::tron(),
+										'USDT_ETHEREUM',
+										new Currency('USDT'),
+										Blockchain::ethereum(),
 									);
 								}
 							}
@@ -726,6 +728,7 @@
 					</pre>
 				</section>
 				<section>
+					<h2>Адреса</h2>
 					<table class="db-rows-extra-small">
 						<thead>
 						<tr>
@@ -776,8 +779,13 @@
 				<section>
 						<div class="greeting text-shadow">
 							<img src="images/pepe-bitcoin.jpg" alt="" style="width: 70%">
-							<div class="bottom-center greeting" style="padding: 10px; background: black; border-radius: 5px">
+							<div class="r-stack">
+							<div class="fragment bottom-center greeting fade-out" data-fragment-index="0" style="padding: 10px; background: black; border-radius: 5px">
 								Нужно добавить Bitcoin
+							</div>
+							<div class="fragment bottom-center greeting current-visible" data-fragment-index="0" style="padding: 10px; background: black; border-radius: 5px">
+								Нужно добавить Bitcoin, Litecoin, Dogecoin
+							</div>
 							</div>
 						</div>
 				</section>
@@ -846,6 +854,13 @@
 							</tr>
 							<tr class="fragment highlight-current-blue" data-fragment-index="1">
 								<td>12</td>
+								<td>bc1zw508d6qejxtd...zarvaryvg6kdaj</td>
+								<td>input</td>
+								<td>0.01 </td>
+								<td>BTC</td>
+							</tr>
+							<tr class="fragment highlight-current-blue" data-fragment-index="1">
+								<td>12</td>
 								<td>bc1qar0srrr7xfkvy...e59gtzzwf5mdq</td>
 								<td>output</td>
 								<td>0.003</td>
@@ -858,20 +873,13 @@
 								<td>0.007 </td>
 								<td>BTC</td>
 							</tr>
-							<tr class="fragment highlight-current-blue" data-fragment-index="1">
-								<td>12</td>
-								<td>bc1zw508d6qejxtd...zarvaryvg6kdaj</td>
-								<td>input</td>
-								<td>0.01 </td>
-								<td>BTC</td>
-							</tr>
 						</tbody>
 					</table>
 				</section>
 				<section>
 					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|16-20,22-26">
+							  data-line-numbers="|3-14|16-20,22-26">
 								class Address
 								{
 									private string $amount;
@@ -905,7 +913,7 @@
 				<section>
 					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|7-16|18-21|18-21,23-26">
+							  data-line-numbers="|7-16|18-21,23-26">
 							class Transaction
 							{
 								private readonly string $amount;
@@ -942,23 +950,31 @@
 						<li>Используем ассеты (блокчейн + валюта)</li>
 						<li>Для работы с деньгами используем объект Money</li>
 						<li>Адресов может быть несколько (UTXO)</li>
-						<li>Inputs/outputs храним в отдельной таблице</li>
 					</ul>
 				</section>
 				<section>
 					<h2>Transaction flow</h2>
-					<img src="images/transaction-flow.svg" alt="">
+					<div class="r-stack">
+						<img class="fragment" src="images/transaction-flow.svg" alt="">
+						<img class="fragment" src="images/transaction-flow-wallet.svg" alt="">
+						<img class="fragment" src="images/transaction-flow-hex.svg" alt="">
+						<img class="fragment" src="images/transaction-flow-hash.svg" alt="">
+					</div>
+				</section>
+				<section>
+					<img src="images/pepe-temporal.jpg" alt="">
 				</section>
 				<section>
 					<pre class="extra-small">
 						<code class="language-php"
-							  data-line-numbers="1-20|8-18|8-9|11-14|11-18"
+							  data-line-numbers="|9-10|12-15|12-19"
 							  data-trim data-noescape style="max-height: 520px">
 							#[WorkflowInterface]
 							final class ExecuteCryptoTransactionWorkflow
 							{
 								// ...
 
+								#[WorkflowMethod]
 								public function execute(CryptoAddress $address, Money $amount)
 								{
 									$hex = yield $this->walletActivity->sign($address, $amount);
