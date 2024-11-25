@@ -364,16 +364,6 @@
 				<section>
 					<pre>
 						<code class="language-php" data-trim data-noescape>
-							enum BlockchainName: string
-							{
-								case ETEREUM = 'ethereum';
-							}
-						</code>
-					</pre>
-				</section>
-				<section>
-					<pre>
-						<code class="language-php" data-trim data-noescape>
 							final readonly class Blockchain
 							{
 								private const NETWORK_MAINNET = 'mainnet';
@@ -625,6 +615,9 @@
 					</ul>
 				</section>
 				<section>
+					<img src="images/large-small-number.png" alt="">
+				</section>
+				<section>
 					<div class="greeting text-shadow">
 						<img src="images/meme-explaining.jpg" alt="">
 						<div class="bottom-center" style="top: 82%; background: black; border-radius: 5px">
@@ -682,23 +675,38 @@
 				<section>
 					<pre class="small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|3,4,10,13-14,18-20">
+							  data-line-numbers="|3,4,11,12,14-20">
 							class Transaction
 							{
 								private readonly string $amount;
 								private readonly Currency $currency;
 								private readonly Blockchain $blockchain;
+								private readonly string $assetId;
 
 								public function __construct(
 									private string $addressFrom,
 									private string $addressTo,
 									Money $amount,
-									private readonly Asset $asset
+									Asset $asset,
 								) {
+									if (! $amount->getCurrency()->equals($asset->currency)) {
+										throw new InvalidArgumentException("Wrong amount");
+									}
 									$this->amount = $amount->getAmount();
 									$this->currency = $amount->getCurrency();
 									$this->blockchain = $asset->blockchain;
+									$this->assetId = $asset->assetId;
 								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre class="small">
+						<code class="language-php" data-trim data-noescape>
+							class Transaction
+							{
+								// ...
 
 								public function getAmount(): Money {
 									return new Money($this->amount, $this->currency);
@@ -828,6 +836,10 @@
 					<p>Сделать перевод 2 ETH на какой-то адрес.</p>
 					<h3>UTXO</h3>
 					<p>Сделать перевод 1 BTC на один адрес, 2 BTC на другой адрес и еще 3 BTC на третий адрес.</p>
+				</section>
+				<section>
+					<img src="images/btc-tx.png" alt="">
+					<a href="https://bitaps.com/4bb68cb007c9793d5cfca8d64b36506799cd9f7afef392b6cd2479453fbf1b01" class="explorer-link">https://bitaps.com/4bb68cb007c9793d5cfca8d64b36506799cd9f7afef392b6cd2479453fbf1b01</a>
 				</section>
 				<section>
 						<img src="images/pepe-computer.jpg" alt="" style="height: 70%; width: 70%">
@@ -1104,13 +1116,14 @@
 					<h3>Перевод ETH</h3>
 					<pre class="small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="1,10-17|11,3-7|8,16|14|10-19">
+							  data-line-numbers="1,11-18|12,3-7|9,17|15|11-20">
 							use Web3p\EthereumTx\Transaction;
 
-							$nonceResult = $nodeClient->call(
+							$transactionCount = $nodeClient->call(
 								"eth_getTransactionCount", [$walletAddress, "pending"]
 							);
-							$nonce = hexdec($nonceResult->getResult());
+							// 10 транзакция = 9 нонс = 9 транзакций в сети
+							$nonce = hexdec($transactionCount->getResult());
 
 							$amountInHex = dechex((int)'1000000000000000000'); // 1 ETH
 
@@ -1150,10 +1163,10 @@
 						<code class="language-php" data-trim data-noescape>
 							use Web3p\EthereumTx\Transaction;
 
-							$nonceResult = $nodeClient->call(
+							$transactionCount = $nodeClient->call(
 								"eth_getTransactionCount", [$walletAddress, "pending"]
 							);
-							$nonce = hexdec($nonceResult->getResult());
+							$nonce = hexdec($transactionCount->getResult());
 
 							// Check token balance ???
 						</code>
@@ -1337,6 +1350,12 @@
 								<td>< года назад</td>
 							</tr>
 							<tr>
+								<td>
+									<a href="https://github.com/Merkeleon/php-cryptocurrency-address-validation">php cryptocurrency address validation</a>
+								</td>
+								<td> 1 год назад</td>
+							</tr>
+							<tr>
 								<td><a href="https://github.com/web3p/ethereum-tx">web3p/ethereum-tx</a></td>
 								<td>2 года назад</td>
 							</tr>
@@ -1370,12 +1389,6 @@
 									<a href="https://github.com/zulucrypto/stellar-api">Stellar API</a>
 								</td>
 								<td> 6 лет назад</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="https://github.com/murich/php-cryptocurrency-address-validation">php cryptocurrency address validation</a>
-								</td>
-								<td> 7 лет назад</td>
 							</tr>
 						</tbody>
 					</table>
