@@ -52,7 +52,10 @@
 				max-height: none;
 			}
 
-			.reveal table.db-rows.font-left {
+			.reveal table.db-rows.font-left, .reveal table.db-rows-small.font-left  {
+				th {
+					text-align: left;
+				}
 				td {
 					text-align: left;
 				}
@@ -228,8 +231,7 @@
 					</table>
 				</section>
 				<section>
-					<h2>Блокчейны и сети</h2>
-					<table class="db-rows font-left" style="width: 115%">
+					<table class="db-rows font-left">
 						<thead>
 						<tr>
 							<th>Блокчейн</th>
@@ -243,11 +245,11 @@
 							</tr>
 							<tr>
 								<td>Ethereum</td>
-								<td>Mainnet, Sepolia Testnet, Holesky Testnet</td>
+								<td>Mainnet, Sepolia Testnet, </br> Holesky Testnet</td>
 							</tr>
 							<tr>
 								<td>Tron</td>
-								<td>Mainnet, Nile Testnet, Shasta Testnet</td>
+								<td>Mainnet, Nile Testnet, </br>Shasta Testnet</td>
 							</tr>
 						</tbody>
 					</table>
@@ -405,7 +407,8 @@
 				</section>
 				<section>
 					<pre>
-						<code class="language-php" data-trim data-noescape>
+						<code class="language-php" data-trim data-noescape
+							  data-line-numbers="|7-8">
 							class Transaction
 							{
 								public function __construct(
@@ -780,10 +783,14 @@
 						<div class="greeting text-shadow">
 							<img src="images/pepe-bitcoin.jpg" alt="" style="width: 70%">
 							<div class="r-stack">
-							<div class="fragment bottom-center greeting fade-out" data-fragment-index="0" style="padding: 10px; background: black; border-radius: 5px">
+							<div class="fragment bottom-center greeting fade-out"
+								 data-fragment-index="0"
+								 style="padding: 10px; background: black; border-radius: 5px; top: 80%">
 								Нужно добавить Bitcoin
 							</div>
-							<div class="fragment bottom-center greeting current-visible" data-fragment-index="0" style="padding: 10px; background: black; border-radius: 5px">
+							<div class="fragment bottom-center greeting current-visible"
+								 data-fragment-index="0"
+								 style="padding: 10px; background: black; border-radius: 5px; top: 83%">
 								Нужно добавить Bitcoin, Litecoin, Dogecoin
 							</div>
 							</div>
@@ -913,7 +920,7 @@
 				<section>
 					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|7-16|18-21,23-26">
+							  data-line-numbers="|9-10|18-21,23-26">
 							class Transaction
 							{
 								private readonly string $amount;
@@ -923,7 +930,7 @@
 								private function __construct(
 									Money $amount,
 									/** @var Address[] $addresses */
-									private array $addresses,
+									private readonly array $addresses,
 									private readonly Asset $asset,
 								) {
 									$this->amount = $amount->getAmount();
@@ -1090,10 +1097,14 @@
 					</ul>
 				</section>
 				<section>
+					<h2>Ethereum и EVM-блокчейны</h2>
+					<p>composer require web3p/ethereum-tx</p>
+				</section>
+				<section>
 					<h3>Перевод ETH</h3>
 					<pre class="small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|3-7|9,17|15|11-20">
+							  data-line-numbers="1,10-17|11,3-7|8,16|14|10-19">
 							use Web3p\EthereumTx\Transaction;
 
 							$nonceResult = $nodeClient->call(
@@ -1107,7 +1118,7 @@
 								'nonce' => $nonce,
 								'from' => $walletAddress,
 								'to' => $addressTo,
-								'gas' => '0x' . self::ETHEREUM_GAS_LIMIT, // 210000
+								'gas' => '0x' . self::ETHEREUM_GAS_LIMIT, // 21000
 								'gasPrice' => $gasPrice,
 								'value' => '0x'. $amountInHex,
 							]);
@@ -1210,10 +1221,10 @@
 						<code class="language-php" data-trim data-noescape
 							  data-line-numbers="|1,2|3,5-6|7-14">
 							$erc20AbiJson = '...';
-							$ethAbi = new \Web3\Contract('https://eth.public-rpc.com', $erc20AbiJson);
+							$contract = new \Web3\Contract('https://eth.public-rpc.com', $erc20AbiJson);
 							$usdtContractAddress = '0xdac17f958d2ee523a2206206994597c13d831ec7';
 
-							$ethAbi
+							$contract
 								->at($usdtContractAddress)
 								->call(
 									"balanceOf",
@@ -1269,8 +1280,9 @@
 					</pre>
 					<h5 class="fragment text-left" data-fragment-index="1">PHP:</h5>
 					<pre class="fragment extra-small" data-fragment-index="1">
-						<code class="language-php" data-trim data-noescape data-line-numbers="|1,10">
-							$data = '0x' . $ethAbi->getData('transfer', $addressTo, $amount);
+						<code class="language-php" data-trim data-noescape data-line-numbers="|2,11|4-14">
+							$contract = new \Web3\Contract('https://eth.public-rpc.com', $erc20AbiJson);
+							$data = '0x' . $contract->getData('transfer', $addressTo, $amount);
 
 							$transaction = new Transaction([
 								'nonce' => $nonce,
@@ -1291,7 +1303,7 @@
 						<code class="language-php" data-trim data-noescape>
 							// Transfer 250 USDT to 0x5d0c1c863c637327da8966241ebd6b2f5c4f6945
 
-							$data = '0x' . $ethAbi->getData(
+							$data = '0x' . $contract->getData(
 								'transfer', '0x5d0c1c863c637327da8966241ebd6b2f5c4f6945', '250000000'
 							);
 
@@ -1307,25 +1319,79 @@
 					   href="https://etherscan.io/tx/0xa16691f915acd67ec0139576f5bcdcd3d0fb573f31566ca0ff6aab128c35f314">https://etherscan.io/tx/0xa16691f915acd67ec0139576f5bcdcd3d0fb573f31566ca0ff6aab128c35f314</a>
 				</section>
 				<section>
-					<img src="images/pepe-grave.jpg" alt="" style="width: 70%">
+					<h2>Страх и ненависть</h2>
+					<img src="images/fear-and-loathing.jpg" alt="" style="width: 50%;">
 				</section>
 				<section>
 					<h3><s>Кладбище</s> Список библиотек</h3>
+					<table class="db-rows-small font-left">
+						<thead>
+							<tr>
+								<th>Название</th>
+								<th>Последнее обновление</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="https://github.com/web3p/web3.php">web3.php</a></td>
+								<td>< года назад</td>
+							</tr>
+							<tr>
+								<td><a href="https://github.com/web3p/ethereum-tx">web3p/ethereum-tx</a></td>
+								<td>2 года назад</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="https://github.com/iexbase/tron-api">Tron API</a>
+								</td>
+								<td> 2 года назад</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="https://github.com/digitaldonkey/ethereum-php">Ethereum-PHP</a>
+								</td>
+								<td>3 года назад</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="https://github.com/kornrunner/php-keccak">php-keccak</a></td>
+								<td> 3 года назад</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="https://github.com/foxrp/rippled-php">Rippled PHP</a>
+								</td>
+								<td>
+									6 лет назад
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="https://github.com/zulucrypto/stellar-api">Stellar API</a>
+								</td>
+								<td> 6 лет назад</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="https://github.com/murich/php-cryptocurrency-address-validation">php cryptocurrency address validation</a>
+								</td>
+								<td> 7 лет назад</td>
+							</tr>
+						</tbody>
+					</table>
 					<ul style="width: 104%">
-						<li><a href="https://github.com/web3p/ethereum-tx">web3p/ethereum-tx</a> 2 года назад</li>
-						<li><a href="https://github.com/digitaldonkey/ethereum-php">Ethereum-PHP</a> 3 года назад</li>
-						<li><a href="https://github.com/iexbase/tron-api">Tron API</a> 2 года назад</li>
-						<li><a href="https://github.com/foxrp/rippled-php">Rippled PHP</a> 6 лет назад</li>
-						<li><a href="https://github.com/zulucrypto/stellar-api">Stellar API</a> 6 лет назад</li>
-						<li><a href="https://github.com/murich/php-cryptocurrency-address-validation">php cryptocurrency address validation</a> 7 лет назад</li>
-						<li><a href="https://github.com/kornrunner/php-keccak">php-keccak</a> 3 года назад</li>
+
 					</ul>
 				</section>
 				<section>
-					<h2>Спасибо</h2>
-					<img src="images/fear-and-loathing.jpg" alt="" style="width: 50%;">
+					<img src="images/pepe-grave.jpg" alt="" style="width: 70%">
 				</section>
-				<section data-background-image="images/end.jpg" data-background-size="contain">
+				<section>
+					<img src="images/this-is-fine.jpg" alt="" style="width: 70%">
+				</section>
+				<section>
+					<h2>Спасибо</h2>
+					<img src="images/qr-code.gif" alt="">
 				</section>
 			</div>
 		</div>
