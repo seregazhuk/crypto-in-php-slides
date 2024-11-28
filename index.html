@@ -313,52 +313,6 @@
 							</tr>
 							</tbody>
 						</table>
-						<table class="db-rows-extra-small fragment">
-							<thead>
-							<tr>
-								<th>hash</th>
-								<th>address_from</th>
-								<th>address_to</th>
-								<th>amount</th>
-								<th>currency</th>
-								<th>blockchain</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td>0x73f8fed2...</td>
-								<td>0xc407...24308</td>
-								<td>0x4924...f7CF9</td>
-								<td>100</td>
-								<td>USDT</td>
-								<td>ethereum_mainnet</td>
-							</tr>
-							<tr>
-								<td>0xdeddf137...</td>
-								<td>0xa970...d8950</td>
-								<td>0xEDCb...84Aa8</td>
-								<td>1000000</td>
-								<td>PEPE</td>
-								<td>ethereum_sepolia</td>
-							</tr>
-							<tr>
-								<td>0x1fed1b03...</td>
-								<td>0x9E0f...94F35</td>
-								<td>0x8446...d8190d</td>
-								<td>0.003855038</td>
-								<td>ETH</td>
-								<td>ethereum_mainnet</td>
-							</tr>
-							<tr>
-								<td>0x388ea62e...</td>
-								<td>0x2458...FdF97</td>
-								<td>0x4206...4C625A</td>
-								<td>0.012173249</td>
-								<td>ETH</td>
-								<td>ethereum_sepolia</td>
-							</tr>
-							</tbody>
-						</table>
 					</div>
 				</section>
 				<section>
@@ -448,7 +402,7 @@
 				<section>
 					<div class="r-stack">
 						<h3 class="fragment fade-out" data-fragment-index="0">Asset = Blockchain + Currency</h3>
-						<h3 style="width: 106%" class="fragment current-visible" data-fragment-index="0">Asset = Blockchain (name + network) + Currency + AssetID</h3>
+						<h4 class="fragment current-visible" data-fragment-index="0">Asset = Blockchain (name + network) + Currency + AssetID</h4>
 					</div>
 				</section>
 				<section>
@@ -468,16 +422,9 @@
 				<section>
 					<pre class="small">
 						<code class="language-php" data-trim data-noescape>
-							public static function PEPE_ETHEREUM(): self
+							public static function ETH(): self
 							{
-								return new self(
-									'PEPE_ETHEREUM', 'PEPE', Blockchain::ethereum()
-								);
-							}
-
-							public static function USDT_ETHEREUM(): self
-							{
-								return new self('USDT_ETHEREUM', 'USDT', Blockchain::ethereum());
+								return new self('ETH', 'ETH', Blockchain::ethereum());
 							}
 
 							public static function USDT_ETHEREUM_SEPOLIA(): self
@@ -710,29 +657,6 @@
 
 								public function getAmount(): Money {
 									return new Money($this->amount, $this->currency);
-								}
-							}
-						</code>
-					</pre>
-				</section>
-				<section>
-					<pre class="small">
-						<code class="language-php" data-trim data-noescape data-line-numbers="1-15|5,13">
-							final readonly class Asset
-							{
-								private function __construct(
-									public string $id,
-									public Currency $currency,
-									public Blockchain $blockchain,
-								) {}
-
-								public static function USDT_ETHEREUM(): self
-								{
-									return new self(
-										'USDT_ETHEREUM',
-										new Currency('USDT'),
-										Blockchain::ethereum(),
-									);
 								}
 							}
 						</code>
@@ -1113,7 +1037,7 @@
 					<p>composer require web3p/ethereum-tx</p>
 				</section>
 				<section>
-					<h3>Transaction = nonce + from + to + gas + value</h3>
+					<h3>Transaction = from + to + nonce + gas + value</h3>
 				</section>
 				<section>
 					<h3>Перевод ETH</h3>
@@ -1289,7 +1213,7 @@
 					</pre>
 					<h5 class="fragment text-left" data-fragment-index="1">PHP:</h5>
 					<pre class="fragment extra-small" data-fragment-index="1">
-						<code class="language-php" data-trim data-noescape data-line-numbers="|2,11|4-14">
+						<code class="language-php" data-trim data-line-numbers="|2,11|4-14">
 							$contract = new \Web3\Contract('https://eth.public-rpc.com', $erc20AbiJson);
 							$data = '0x' . $contract->getData('transfer', $addressTo, $amount);
 
@@ -1416,9 +1340,8 @@
 			Reveal.initialize({
 				hash: true,
 				slideNumber: true,
-
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				plugins: [ RevealHighlight ]
 			});
 		</script>
 	</body>
