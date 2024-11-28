@@ -642,12 +642,12 @@
 							<td>До сих пор нет версии 1.0</td>
 						</tr>
 						<tr>
-							<td>Не очень user-friendly интерфейс</td>
-							<td>user-friendly интерфейс</td>
+							<td>Не очень user-friendly-интерфейс</td>
+							<td>user-friendly-интерфейс</td>
 						</tr>
 						<tr>
-							<td>Парсеры, форматтеры, конвертеры</td>
-							<td>Парсеры, форматтеры, конвертеры</td>
+							<td>Парсеры, форматеры, конвертеры</td>
+							<td>Парсеры, форматеры, конвертеры</td>
 						</tr>
 						<tr>
 							<td class="fragment highlight-blue">Поддержка криптовалют из коробки</td>
@@ -1084,7 +1084,7 @@
 					</pre>
 				</section>
 				<section>
-					<h3>Статусы блокчейн транзакции</h3>
+					<h3>Статусы блокчейн-транзакции</h3>
 					<div class="r-stack">
 					<ul class="">
 						<li class="fragment highlight-current-blue">Signed</li>
@@ -1111,6 +1111,9 @@
 				<section>
 					<h2>Ethereum и EVM-блокчейны</h2>
 					<p>composer require web3p/ethereum-tx</p>
+				</section>
+				<section>
+					<h3>Transaction = nonce + from + to + gas + value</h3>
 				</section>
 				<section>
 					<h3>Перевод ETH</h3>
@@ -1141,6 +1144,7 @@
 					</pre>
 				</section>
 				<section>
+					<h2>Проверка баланса</h2>
 					<pre class="small">
 						<code class="language-php" data-trim data-noescape
 							  data-line-numbers="|1-5|7-10">
@@ -1158,19 +1162,8 @@
 					</pre>
 				</section>
 				<section>
-					<h3>Перевод ERC-20 токена</h3>
-					<pre class="small">
-						<code class="language-php" data-trim data-noescape>
-							use Web3p\EthereumTx\Transaction;
-
-							$transactionCount = $nodeClient->call(
-								"eth_getTransactionCount", [$walletAddress, "pending"]
-							);
-							$nonce = hexdec($transactionCount->getResult());
-
-							// Check token balance ???
-						</code>
-					</pre>
+					<h3>ERC-20-токены</h3>
+					<img src="images/pepe-shiba-doge.png" alt="">
 				</section>
 				<section>
 					<h2>ERC-20</h2>
@@ -1255,6 +1248,9 @@
 					<img src="images/usdt-balance-of.png" alt="">
 					<a class="explorer-link"
 					   href="https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7#readContract">https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7#readContract</a>
+				</section>
+				<section>
+					<h3>ERC-20 transaction = nonce + from + to + gas + value + <span class="fragment highlight-blue">data</span></h3>
 				</section>
 				<section>
 					<h3>Перевод ERC-20 токена</h3>
