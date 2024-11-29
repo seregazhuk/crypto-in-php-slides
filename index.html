@@ -562,7 +562,15 @@
 					</ul>
 				</section>
 				<section>
-					<img src="images/large-small-number.png" alt="">
+					<div class="r-stack">
+						<img class="fragment fade-out"
+							 src="images/large-and-small-numbers.png" alt="" style="width: 100%"
+							 data-fragment-index="0">
+						<img class="fragment current-visible"
+							 src="images/large-and-small-numbers-highlight.png"
+							 alt="" style="width: 100%"
+							 data-fragment-index="0">
+					</div>
 				</section>
 				<section>
 					<div class="greeting text-shadow">
@@ -715,16 +723,16 @@
 						<div class="greeting text-shadow">
 							<img src="images/pepe-bitcoin.jpg" alt="" style="width: 70%">
 							<div class="r-stack">
-							<div class="fragment bottom-center greeting fade-out"
-								 data-fragment-index="0"
-								 style="padding: 10px; background: black; border-radius: 5px; top: 80%">
-								Нужно добавить Bitcoin
-							</div>
-							<div class="fragment bottom-center greeting current-visible"
-								 data-fragment-index="0"
-								 style="padding: 10px; background: black; border-radius: 5px; top: 83%">
-								Нужно добавить Bitcoin, Litecoin, Dogecoin
-							</div>
+								<div class="fragment bottom-center greeting fade-out"
+									 data-fragment-index="0"
+									 style="padding: 10px; background: black; border-radius: 5px; top: 80%">
+									Нужно добавить Bitcoin
+								</div>
+								<div class="fragment bottom-center greeting current-visible"
+									 data-fragment-index="0"
+									 style="padding: 10px; background: black; border-radius: 5px; top: 83%">
+									Нужно добавить Bitcoin, Litecoin, Dogecoin
+								</div>
 							</div>
 						</div>
 				</section>
@@ -762,7 +770,10 @@
 					<p>Сделать перевод 1 BTC на один адрес, 2 BTC на другой адрес и еще 3 BTC на третий адрес.</p>
 				</section>
 				<section>
-					<img src="images/btc-tx.png" alt="">
+					<div class="r-stack">
+						<img class="fragment fade-out" src="images/btc-tx.png" alt="" data-fragment-index="0">
+						<img class="fragment current-visible" src="images/btc-tx-highlight.png" alt="" data-fragment-index="0">
+					</div>
 					<a href="https://bitaps.com/4bb68cb007c9793d5cfca8d64b36506799cd9f7afef392b6cd2479453fbf1b01" class="explorer-link">https://bitaps.com/4bb68cb007c9793d5cfca8d64b36506799cd9f7afef392b6cd2479453fbf1b01</a>
 				</section>
 				<section>
@@ -1043,7 +1054,7 @@
 					<h3>Перевод ETH</h3>
 					<pre class="small">
 						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="1,11-18|12,3-7|9,17|15|11-20">
+							  data-line-numbers="1,11-18|13-14|12,3-7|9,17|15|11-20">
 							use Web3p\EthereumTx\Transaction;
 
 							$transactionCount = $nodeClient->call(
@@ -1068,24 +1079,6 @@
 					</pre>
 				</section>
 				<section>
-					<h2>Проверка баланса</h2>
-					<pre class="small">
-						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|1-5|7-10">
-							$balanceResponse = $nodeClient->call(
-								"eth_getBalance", [$walletAddress, "latest"]
-							);
-							// balance in Wei
-							$rawBalance = hexdec($balanceResponse->getResult());
-
-							$balance = new Money($rawBalance, new Currency('ETH'));
-							if ($balance->lessThan($requestedAmount)) {
-								throw new NotEnoughBalanceException($walletAddress, $balance);
-							}
-						</code>
-					</pre>
-				</section>
-				<section>
 					<h3>ERC-20-токены</h3>
 					<img src="images/pepe-shiba-doge.png" alt="">
 				</section>
@@ -1093,7 +1086,7 @@
 					<h2>ERC-20</h2>
 					<pre class="extra-small">
 						<code class="language-js" data-trim data-noescape
-							  data-line-numbers="|5,6">
+							  data-line-numbers="|6">
 							function name() public view returns (string)
 							function symbol() public view returns (string)
 							function decimals() public view returns (uint8)
@@ -1108,21 +1101,6 @@
 				</section>
 				<section>
 					<h3>Application Binary Interface (ABI)</h3>
-					<pre class="extra-small">
-						<code class="language-json" data-trim data-noescape>
-							{
-								"type": "function",
-								"name": "balanceOf",
-								"inputs": [
-									{"name": "_owner", "type": "address"}
-								],
-								"outputs": [
-									{"name": "balance", "type": "uint256"}
-								],
-								"payable": false
-							}
-						</code>
-					</pre>
 					<pre class="extra-small">
 						<code class="language-json" data-trim data-noescape>
 						{
@@ -1146,34 +1124,6 @@
 					<p>composer require web3p/web3.php</p>
 				</section>
 				<section>
-					<h2>ERC-20: balanceOf</h2>
-					<pre class="extra-small">
-						<code class="language-php" data-trim data-noescape
-							  data-line-numbers="|1,2|3,5-6|7-14">
-							$erc20AbiJson = '...';
-							$contract = new \Web3\Contract('https://eth.public-rpc.com', $erc20AbiJson);
-							$usdtContractAddress = '0xdac17f958d2ee523a2206206994597c13d831ec7';
-
-							$contract
-								->at($usdtContractAddress)
-								->call(
-									"balanceOf",
-									$walletAddress,
-									function($err, array $res) use (&$balance) {
-										/** @var BigInteger $balanceRaw */
-										$balanceRaw = $res[0]; // in decimals
-										$balance = new Money($balanceRaw->toString(), new Currency('USDT'));
-									}
-								);
-						</code>
-					</pre>
-				</section>
-				<section>
-					<img src="images/usdt-balance-of.png" alt="">
-					<a class="explorer-link"
-					   href="https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7#readContract">https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7#readContract</a>
-				</section>
-				<section>
 					<h3>ERC-20 transaction = nonce + from + to + gas + value + <span class="fragment highlight-blue">data</span></h3>
 				</section>
 				<section>
@@ -1181,7 +1131,6 @@
 					<pre class="extra-small">
 						<code class="language-php" data-trim data-noescape
 							  data-line-numbers="|1,10|13|11|5,14">
-
 							$smartContractAddress = '0xdac17f958d2ee523a2206206994597c13d831ec7'; // USDT
 
 							// ...
@@ -1213,7 +1162,8 @@
 					</pre>
 					<h5 class="fragment text-left" data-fragment-index="1">PHP:</h5>
 					<pre class="fragment extra-small" data-fragment-index="1">
-						<code class="language-php" data-trim data-line-numbers="|2,11|4-14">
+						<code class="language-php" data-trim data-line-numbers="|1-2|3,12|4-15">
+							$erc20AbiJson = '{...}';
 							$contract = new \Web3\Contract('https://eth.public-rpc.com', $erc20AbiJson);
 							$data = '0x' . $contract->getData('transfer', $addressTo, $amount);
 
